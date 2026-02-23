@@ -3,6 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import { ChevronRight, ChevronLeft, Send, Upload, CheckCircle2, Eye, Clock, AlertCircle, CheckCircle, Plus } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
+import { FormError } from "@/components/FormError";
 
 /* ── Mock tickets ── */
 const mockTickets = [
@@ -212,6 +213,43 @@ function TicketDetail({ ticket, onBack }: { ticket: (typeof mockTickets)[0]; onB
    ══════════════════════════════════════ */
 function NewTicketForm() {
   const [step, setStep] = useState(0);
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [submitted, setSubmitted] = useState(false);
+
+  const validateStep = (currentStep: number): boolean => {
+    const errs: Record<string, string> = {};
+
+    if (currentStep === 0) {
+      const area = (document.getElementById("t-area") as HTMLSelectElement)?.value;
+      const cat = (document.getElementById("t-cat") as HTMLSelectElement)?.value;
+      if (!area) errs["t-area"] = "Seleziona un'area.";
+      if (!cat) errs["t-cat"] = "Seleziona una categoria.";
+    }
+
+    if (currentStep === 1) {
+      const oggetto = (document.getElementById("t-oggetto") as HTMLInputElement)?.value.trim();
+      const messaggio = (document.getElementById("t-messaggio") as HTMLTextAreaElement)?.value.trim();
+      if (!oggetto) errs["t-oggetto"] = "L'oggetto è obbligatorio.";
+      if (!messaggio) errs["t-messaggio"] = "La descrizione è obbligatoria.";
+    }
+
+    setErrors(errs);
+    return Object.keys(errs).length === 0;
+  };
+
+  const handleNext = () => {
+    if (validateStep(step)) {
+      setStep(step + 1);
+    }
+  };
+
+  const handleSubmitTicket = () => {
+    setSubmitted(true);
+    setTimeout(() => {
+      setSubmitted(false);
+      setStep(0);
+    }, 3000);
+  };
 
   return (
     <div className="space-y-6">
@@ -235,9 +273,15 @@ function NewTicketForm() {
       </nav>
 
       <div className="rounded-xl border border-border bg-card p-6 shadow-card">
-        {step === 0 && <StepInfo />}
-        {step === 1 && <StepMessage />}
+        {step === 0 && <StepInfo errors={errors} />}
+        {step === 1 && <StepMessage errors={errors} />}
         {step === 2 && <StepAttach />}
+
+        {submitted && (
+          <p role="status" className="mt-4 flex items-center gap-1.5 text-sm font-medium text-status-paid">
+            ✓ Ticket inviato con successo!
+          </p>
+        )}
 
         <div className="mt-6 flex items-center justify-between border-t border-border pt-4">
           <button
@@ -250,7 +294,8 @@ function NewTicketForm() {
           </button>
           {step < 2 ? (
             <button
-              onClick={() => setStep(step + 1)}
+              type="button"
+              onClick={handleNext}
               className="inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
             >
               Avanti
@@ -258,6 +303,8 @@ function NewTicketForm() {
             </button>
           ) : (
             <button
+              type="button"
+              onClick={handleSubmitTicket}
               className="inline-flex items-center gap-2 rounded-lg bg-secondary px-5 py-2.5 text-sm font-bold text-secondary-foreground transition-colors hover:bg-fontel-green-hover"
             >
               <Send className="h-4 w-4" aria-hidden="true" />
@@ -270,7 +317,10 @@ function NewTicketForm() {
   );
 }
 
-function StepInfo() {
+function StepInfo({ errors }: { errors: Record<string, string> }) {
+  const inputErrClass = (field: string) =>
+    errors[field] ? "border-status-unpaid bg-status-unpaid/5" : "border-input bg-background";
+
   return (
     <div className="space-y-5">
       <h3 className="font-heading text-lg font-semibold text-primary">1. Informazioni Ticket</h3>
@@ -293,21 +343,29 @@ function StepInfo() {
         </div>
         <div>
           <label htmlFor="t-area" className="mb-1.5 block text-sm font-medium text-card-foreground">Area ticket *</label>
-          <select id="t-area" className="w-full rounded-lg border border-input bg-background px-4 py-2.5 text-sm text-card-foreground focus:outline-none focus:ring-2 focus:ring-primary" required>
+          <select id="t-area"
+            aria-invalid={!!errors["t-area"]}
+            aria-describedby={errors["t-area"] ? "err-t-area" : undefined}
+            className={`w-full rounded-lg border px-4 py-2.5 text-sm text-card-foreground focus:outline-none focus:ring-2 focus:ring-primary ${inputErrClass("t-area")}`}>
             <option value="">Seleziona l'area del ticket</option>
             <option value="commerciale">Commerciale</option>
             <option value="tecnico">Tecnico</option>
             <option value="amministrativo">Amministrativo</option>
           </select>
+          <FormError id="err-t-area" message={errors["t-area"] || ""} />
         </div>
         <div>
           <label htmlFor="t-cat" className="mb-1.5 block text-sm font-medium text-card-foreground">Categoria ticket *</label>
-          <select id="t-cat" className="w-full rounded-lg border border-input bg-background px-4 py-2.5 text-sm text-card-foreground focus:outline-none focus:ring-2 focus:ring-primary" required>
+          <select id="t-cat"
+            aria-invalid={!!errors["t-cat"]}
+            aria-describedby={errors["t-cat"] ? "err-t-cat" : undefined}
+            className={`w-full rounded-lg border px-4 py-2.5 text-sm text-card-foreground focus:outline-none focus:ring-2 focus:ring-primary ${inputErrClass("t-cat")}`}>
             <option value="">Seleziona la categoria</option>
             <option value="info">Informazioni</option>
             <option value="reclamo">Reclamo</option>
             <option value="guasto">Guasto</option>
           </select>
+          <FormError id="err-t-cat" message={errors["t-cat"] || ""} />
         </div>
         <div>
           <label htmlFor="t-priorita" className="mb-1.5 block text-sm font-medium text-card-foreground">Priorità</label>
@@ -322,19 +380,28 @@ function StepInfo() {
   );
 }
 
-function StepMessage() {
+function StepMessage({ errors }: { errors: Record<string, string> }) {
+  const inputErrClass = (field: string) =>
+    errors[field] ? "border-status-unpaid bg-status-unpaid/5" : "border-input bg-background";
+
   return (
     <div className="space-y-5">
       <h3 className="font-heading text-lg font-semibold text-primary">2. Messaggio</h3>
       <div>
         <label htmlFor="t-oggetto" className="mb-1.5 block text-sm font-medium text-card-foreground">Oggetto *</label>
-        <input id="t-oggetto" type="text" placeholder="Descrivi brevemente il problema" required
-          className="w-full rounded-lg border border-input bg-background px-4 py-2.5 text-sm text-card-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary" />
+        <input id="t-oggetto" type="text" placeholder="Descrivi brevemente il problema"
+          aria-invalid={!!errors["t-oggetto"]}
+          aria-describedby={errors["t-oggetto"] ? "err-t-oggetto" : undefined}
+          className={`w-full rounded-lg border px-4 py-2.5 text-sm text-card-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary ${inputErrClass("t-oggetto")}`} />
+        <FormError id="err-t-oggetto" message={errors["t-oggetto"] || ""} />
       </div>
       <div>
         <label htmlFor="t-messaggio" className="mb-1.5 block text-sm font-medium text-card-foreground">Descrizione dettagliata *</label>
-        <textarea id="t-messaggio" rows={6} placeholder="Descrivi il problema in dettaglio..." required
-          className="w-full resize-y rounded-lg border border-input bg-background px-4 py-2.5 text-sm text-card-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary" />
+        <textarea id="t-messaggio" rows={6} placeholder="Descrivi il problema in dettaglio..."
+          aria-invalid={!!errors["t-messaggio"]}
+          aria-describedby={errors["t-messaggio"] ? "err-t-messaggio" : undefined}
+          className={`w-full resize-y rounded-lg border px-4 py-2.5 text-sm text-card-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary ${inputErrClass("t-messaggio")}`} />
+        <FormError id="err-t-messaggio" message={errors["t-messaggio"] || ""} />
       </div>
     </div>
   );
