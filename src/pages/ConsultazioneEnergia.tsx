@@ -12,6 +12,10 @@ const invoiceData = [
   { anno: "2024", nFattura: "240150", tipo: "Energy", skc: "C0030504", emissione: "20/11/2024", scadenza: "20/12/2024", totale: "110,75 €", stato: "PAGATA" },
 ];
 
+const supplyPoints = [
+  { code: "C0030504", address: "VICOLO I° PORTAPICCOLA A MONTECALVARIO 8 NAPOLI (NA)", activeFrom: "01 ago 2017" },
+];
+
 export default function ConsultazioneEnergia() {
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -29,6 +33,21 @@ export default function ConsultazioneEnergia() {
       <div>
         <h2 className="font-heading text-2xl font-semibold text-primary">Consultazione Energia</h2>
         <p className="mt-1 text-sm text-muted-foreground">Visualizza e scarica le tue fatture di energia elettrica.</p>
+      </div>
+
+      {/* Seleziona utenza */}
+      <div className="rounded-xl border border-border bg-card p-4 shadow-card">
+        <label htmlFor="utenza-energia" className="mb-2 block text-sm font-semibold text-card-foreground">Seleziona utenza</label>
+        <select
+          id="utenza-energia"
+          className="w-full rounded-lg border border-input bg-background px-4 py-2.5 text-sm text-card-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+        >
+          {supplyPoints.map((sp) => (
+            <option key={sp.code} value={sp.code}>
+              {sp.code} – {sp.address} (attivo dal {sp.activeFrom})
+            </option>
+          ))}
+        </select>
       </div>
 
       {/* Filters & actions */}
