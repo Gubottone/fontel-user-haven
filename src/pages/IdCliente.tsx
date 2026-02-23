@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Link2, CheckCircle2, AlertCircle } from "lucide-react";
+import { Link2, CheckCircle2 } from "lucide-react";
+import { FormError } from "@/components/FormError";
 
 const pdAbbinati = [
   { pd: "IT001E00012345", tipo: "Energia", indirizzo: "Via Roma 12, Milano", stato: "attivo" },
@@ -7,7 +8,6 @@ const pdAbbinati = [
 ];
 
 export default function IdCliente() {
-  const [idCliente, setIdCliente] = useState("9504");
   const [cf, setCf] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
@@ -15,6 +15,10 @@ export default function IdCliente() {
   const handleAbbina = () => {
     if (!cf.trim()) {
       setError("Inserisci il Codice Fiscale o la P.IVA.");
+      return;
+    }
+    if (cf.trim().length < 11) {
+      setError("Il Codice Fiscale deve avere almeno 16 caratteri o la P.IVA 11 caratteri.");
       return;
     }
     setError("");
@@ -63,33 +67,29 @@ export default function IdCliente() {
             <input
               id="id-cliente"
               type="text"
-              value={idCliente}
+              defaultValue="9504"
               readOnly
               className="w-full rounded-lg border border-input bg-muted px-4 py-2.5 text-sm text-muted-foreground cursor-not-allowed"
             />
           </div>
           <div>
-            <label htmlFor="cf-piva" className="mb-1.5 block text-sm font-medium text-card-foreground">Codice Fiscale / P.IVA</label>
+            <label htmlFor="cf-piva" className="mb-1.5 block text-sm font-medium text-card-foreground">Codice Fiscale / P.IVA *</label>
             <input
               id="cf-piva"
               type="text"
               value={cf}
-              onChange={(e) => setCf(e.target.value)}
+              onChange={(e) => { setCf(e.target.value); if (error) setError(""); }}
               placeholder="Inserisci CF o P.IVA"
-              className="w-full rounded-lg border border-input bg-background px-4 py-2.5 text-sm text-card-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary"
+              aria-invalid={!!error}
+              aria-describedby={error ? "err-cf" : undefined}
+              className={`w-full rounded-lg border px-4 py-2.5 text-sm text-card-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary ${error ? "border-status-unpaid bg-status-unpaid/5" : "border-input bg-background"}`}
             />
+            <FormError id="err-cf" message={error} />
           </div>
         </div>
 
-        {error && (
-          <p className="flex items-center gap-1.5 text-sm font-medium text-status-unpaid">
-            <AlertCircle className="h-4 w-4" />
-            {error}
-          </p>
-        )}
-
         {submitted && (
-          <p className="flex items-center gap-1.5 text-sm font-medium text-status-paid">
+          <p role="status" className="flex items-center gap-1.5 text-sm font-medium text-status-paid">
             <CheckCircle2 className="h-4 w-4" />
             Richiesta di abbinamento inviata con successo!
           </p>
