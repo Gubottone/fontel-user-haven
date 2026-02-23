@@ -1,18 +1,206 @@
 import { useState } from "react";
-import { ChevronRight, ChevronLeft, Send, Upload, CheckCircle2 } from "lucide-react";
+import { ChevronRight, ChevronLeft, Send, Upload, CheckCircle2, Eye, Clock, AlertCircle, CheckCircle } from "lucide-react";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
 
+/* ── Mock tickets ── */
+const mockTickets = [
+  {
+    id: "TK-2024-0012",
+    oggetto: "Errore importo fattura di Gennaio",
+    area: "Amministrativo",
+    categoria: "Reclamo",
+    priorita: "Alta",
+    stato: "aperto",
+    data: "18/02/2026",
+    ultimoAggiornamento: "20/02/2026",
+    messaggi: 3,
+  },
+  {
+    id: "TK-2024-0009",
+    oggetto: "Richiesta cambio piano tariffario",
+    area: "Commerciale",
+    categoria: "Informazioni",
+    priorita: "Media",
+    stato: "in_lavorazione",
+    data: "05/02/2026",
+    ultimoAggiornamento: "12/02/2026",
+    messaggi: 5,
+  },
+  {
+    id: "TK-2024-0005",
+    oggetto: "Guasto contatore luce",
+    area: "Tecnico",
+    categoria: "Guasto",
+    priorita: "Alta",
+    stato: "chiuso",
+    data: "10/01/2026",
+    ultimoAggiornamento: "15/01/2026",
+    messaggi: 7,
+  },
+  {
+    id: "TK-2023-0041",
+    oggetto: "Voltura contratto gas",
+    area: "Amministrativo",
+    categoria: "Informazioni",
+    priorita: "Bassa",
+    stato: "chiuso",
+    data: "20/11/2025",
+    ultimoAggiornamento: "28/11/2025",
+    messaggi: 4,
+  },
+];
+
+const statoConfig: Record<string, { label: string; icon: React.ElementType; className: string }> = {
+  aperto: { label: "Aperto", icon: AlertCircle, className: "bg-status-unpaid/15 text-status-unpaid border-status-unpaid/30" },
+  in_lavorazione: { label: "In lavorazione", icon: Clock, className: "bg-amber-500/15 text-amber-600 border-amber-500/30" },
+  chiuso: { label: "Chiuso", icon: CheckCircle, className: "bg-status-paid/15 text-status-paid border-status-paid/30" },
+};
+
+const prioritaConfig: Record<string, string> = {
+  Alta: "bg-status-unpaid/10 text-status-unpaid",
+  Media: "bg-amber-500/10 text-amber-600",
+  Bassa: "bg-muted text-muted-foreground",
+};
+
+/* ── Steps for new ticket ── */
 const steps = ["Informazioni Ticket", "Messaggio", "Allega Immagine"];
 
 export default function Ticket() {
+  return (
+    <div className="space-y-6">
+      <div>
+        <h2 className="font-heading text-2xl font-semibold text-primary">Ticket</h2>
+        <p className="mt-1 text-sm text-muted-foreground">Gestisci le tue segnalazioni o aprine una nuova.</p>
+      </div>
+
+      <Tabs defaultValue="lista" className="space-y-4">
+        <TabsList className="grid w-full grid-cols-2 sm:w-auto sm:inline-grid">
+          <TabsTrigger value="lista">I miei Ticket</TabsTrigger>
+          <TabsTrigger value="nuovo">Nuovo Ticket</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="lista">
+          <TicketList />
+        </TabsContent>
+
+        <TabsContent value="nuovo">
+          <NewTicketForm />
+        </TabsContent>
+      </Tabs>
+    </div>
+  );
+}
+
+/* ══════════════════════════════════════
+   TICKET LIST
+   ══════════════════════════════════════ */
+function TicketList() {
+  const [selected, setSelected] = useState<string | null>(null);
+  const ticket = selected ? mockTickets.find((t) => t.id === selected) : null;
+
+  if (ticket) {
+    return <TicketDetail ticket={ticket} onBack={() => setSelected(null)} />;
+  }
+
+  return (
+    <div className="space-y-3">
+      {mockTickets.map((t) => {
+        const stato = statoConfig[t.stato];
+        const StatoIcon = stato.icon;
+        return (
+          <button
+            key={t.id}
+            onClick={() => setSelected(t.id)}
+            className="w-full rounded-xl border border-border bg-card p-4 text-left shadow-card transition-colors hover:border-primary/30 hover:bg-muted/40"
+          >
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div className="min-w-0 flex-1 space-y-1">
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-semibold text-muted-foreground">{t.id}</span>
+                  <Badge variant="outline" className={`text-[10px] ${prioritaConfig[t.priorita]}`}>
+                    {t.priorita}
+                  </Badge>
+                </div>
+                <p className="truncate font-medium text-card-foreground">{t.oggetto}</p>
+                <p className="text-xs text-muted-foreground">{t.area} · {t.categoria} · Aperto il {t.data}</p>
+              </div>
+              <div className="flex items-center gap-3">
+                <span className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-semibold ${stato.className}`}>
+                  <StatoIcon className="h-3 w-3" />
+                  {stato.label}
+                </span>
+                <Eye className="h-4 w-4 text-muted-foreground" />
+              </div>
+            </div>
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+/* ══════════════════════════════════════
+   TICKET DETAIL
+   ══════════════════════════════════════ */
+function TicketDetail({ ticket, onBack }: { ticket: (typeof mockTickets)[0]; onBack: () => void }) {
+  const stato = statoConfig[ticket.stato];
+  const StatoIcon = stato.icon;
+
+  return (
+    <div className="space-y-4">
+      <button onClick={onBack} className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline">
+        <ChevronLeft className="h-4 w-4" /> Torna alla lista
+      </button>
+
+      <div className="rounded-xl border border-border bg-card p-6 shadow-card space-y-4">
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+          <div>
+            <p className="text-xs font-semibold text-muted-foreground">{ticket.id}</p>
+            <h3 className="font-heading text-lg font-semibold text-primary">{ticket.oggetto}</h3>
+          </div>
+          <span className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-semibold ${stato.className}`}>
+            <StatoIcon className="h-3.5 w-3.5" />
+            {stato.label}
+          </span>
+        </div>
+
+        <div className="grid gap-3 text-sm sm:grid-cols-3">
+          <div><span className="text-muted-foreground">Area:</span> <strong className="text-card-foreground">{ticket.area}</strong></div>
+          <div><span className="text-muted-foreground">Categoria:</span> <strong className="text-card-foreground">{ticket.categoria}</strong></div>
+          <div><span className="text-muted-foreground">Priorità:</span> <Badge variant="outline" className={`ml-1 text-[10px] ${prioritaConfig[ticket.priorita]}`}>{ticket.priorita}</Badge></div>
+          <div><span className="text-muted-foreground">Aperto il:</span> <strong className="text-card-foreground">{ticket.data}</strong></div>
+          <div><span className="text-muted-foreground">Ultimo aggiornamento:</span> <strong className="text-card-foreground">{ticket.ultimoAggiornamento}</strong></div>
+          <div><span className="text-muted-foreground">Messaggi:</span> <strong className="text-card-foreground">{ticket.messaggi}</strong></div>
+        </div>
+      </div>
+
+      {/* Fake conversation */}
+      <div className="rounded-xl border border-border bg-card p-6 shadow-card space-y-4">
+        <h4 className="font-heading text-sm font-semibold text-primary">Conversazione</h4>
+        <div className="space-y-3">
+          <div className="rounded-lg bg-primary/5 p-3 text-sm">
+            <p className="mb-1 text-xs font-semibold text-primary">Tu · {ticket.data}</p>
+            <p className="text-card-foreground">Buongiorno, scrivo per segnalare un problema riguardante: {ticket.oggetto.toLowerCase()}. Attendo un vostro riscontro. Grazie.</p>
+          </div>
+          <div className="rounded-lg bg-muted p-3 text-sm">
+            <p className="mb-1 text-xs font-semibold text-muted-foreground">Operatore · {ticket.ultimoAggiornamento}</p>
+            <p className="text-card-foreground">Buongiorno, abbiamo preso in carico la sua segnalazione. Provvederemo a verificare e la aggiorneremo al più presto.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ══════════════════════════════════════
+   NEW TICKET FORM (unchanged logic)
+   ══════════════════════════════════════ */
+function NewTicketForm() {
   const [step, setStep] = useState(0);
 
   return (
     <div className="space-y-6">
-      <div>
-        <h2 className="font-heading text-2xl font-semibold text-primary">Apri un nuovo Ticket</h2>
-        <p className="mt-1 text-sm text-muted-foreground">Compila i dati per aprire una segnalazione.</p>
-      </div>
-
       {/* Stepper */}
       <nav aria-label="Avanzamento ticket" className="rounded-xl border border-border bg-card p-4 shadow-card">
         <ol className="flex items-center gap-2" role="list">
