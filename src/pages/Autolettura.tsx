@@ -120,7 +120,8 @@ function FormEnergia() {
             id="fornitura-e"
             className="w-full rounded-lg border border-input bg-background px-4 py-2.5 text-sm text-card-foreground focus:outline-none focus:ring-2 focus:ring-primary"
           >
-            <option>C0030504 - VICOLO 1° PORTAPICCOLA A MONTECALVARIO 8 NAPOLI (NA)</option>
+            <option value="C0030504">C0030504 - VICOLO 1° PORTAPICCOLA A MONTECALVARIO 8 NAPOLI (NA)</option>
+            <option value="C0045781">C0045781 - VIA TOLEDO 156 NAPOLI (NA)</option>
           </select>
         </div>
 
@@ -201,7 +202,8 @@ function FormGas() {
             id="fornitura-g"
             className="w-full rounded-lg border border-input bg-background px-4 py-2.5 text-sm text-card-foreground focus:outline-none focus:ring-2 focus:ring-primary"
           >
-            <option>G0002254 - VICO I PORTA PICCOLA A MONTECALVARIO 8 NAPOLI</option>
+            <option value="G0002254">G0002254 - VICO I PORTA PICCOLA A MONTECALVARIO 8 NAPOLI</option>
+            <option value="G0003891">G0003891 - VIA TOLEDO 156 NAPOLI</option>
           </select>
         </div>
 
