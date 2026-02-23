@@ -102,9 +102,11 @@ export function PortalSidebar({ onClose }: PortalSidebarProps) {
           <option value="all">Tutte le utenze</option>
           <optgroup label="Energia">
             <option value="C0030504">C0030504 – Vicolo I° Portapiccola a Montecalvario 8, Napoli (NA) – attivo dal 01/08/2017</option>
+            <option value="C0045781">C0045781 – Via Toledo 156, Napoli (NA) – attivo dal 15/03/2020</option>
           </optgroup>
           <optgroup label="Gas">
             <option value="G0002254">G0002254 – Vico I Porta Piccola a Montecalvario 8, Napoli – attivo dal 01/08/2017</option>
+            <option value="G0003891">G0003891 – Via Toledo 156, Napoli – attivo dal 15/03/2020</option>
           </optgroup>
           <optgroup label="Telecomunicazioni">
             <option disabled>Nessuna utenza attiva</option>
