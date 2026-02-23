@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Zap, Flame, Send, Info } from "lucide-react";
+import { FormError } from "@/components/FormError";
 
 export default function Autolettura() {
   const [tab, setTab] = useState<"energia" | "gas">("energia");
@@ -80,12 +81,37 @@ export default function Autolettura() {
 }
 
 function FormEnergia() {
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const errs: Record<string, string> = {};
+    const fields = ["A1", "A2", "A3", "R1", "R2", "R3"];
+    let hasAtLeastOne = false;
+
+    for (const f of fields) {
+      const val = (form.elements.namedItem(`energia-${f}`) as HTMLInputElement).value.trim();
+      if (val && Number(val) < 0) errs[`energia-${f}`] = "Il valore non può essere negativo.";
+      if (val) hasAtLeastOne = true;
+    }
+
+    if (!hasAtLeastOne) errs["energia-general"] = "Inserisci almeno un valore di lettura.";
+
+    setErrors(errs);
+    if (Object.keys(errs).length === 0) {
+      setSubmitted(true);
+      setTimeout(() => setSubmitted(false), 3000);
+    }
+  };
+
   return (
     <div className="rounded-xl border border-border bg-card p-6 shadow-card">
       <h3 className="mb-1 font-heading text-lg font-semibold text-primary">Comunica la Lettura della Luce</h3>
       <p className="mb-5 text-sm text-muted-foreground">Clicca il tasto fino a quando visualizzi sul display "Lettura Periodo Precedente" e inserisci i consumi.</p>
 
-      <form className="space-y-5" onSubmit={(e) => e.preventDefault()}>
+      <form className="space-y-5" onSubmit={handleSubmit} noValidate>
         <div>
           <label htmlFor="fornitura-e" className="mb-1.5 block text-sm font-medium text-card-foreground">
             Punto di fornitura *
@@ -100,20 +126,32 @@ function FormEnergia() {
 
         <fieldset>
           <legend className="mb-3 text-sm font-semibold text-card-foreground">Valori lettura</legend>
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
+          {errors["energia-general"] && <FormError id="err-energia-general" message={errors["energia-general"]} />}
+          <div className="mt-2 grid grid-cols-2 gap-4 sm:grid-cols-3">
             {["A1", "A2", "A3", "R1", "R2", "R3"].map((field) => (
               <div key={field}>
                 <label htmlFor={`energia-${field}`} className="mb-1 block text-xs font-medium text-muted-foreground">{field}</label>
                 <input
                   type="number"
                   id={`energia-${field}`}
+                  name={`energia-${field}`}
                   placeholder="0"
-                  className="w-full rounded-lg border border-input bg-background px-4 py-2.5 text-sm text-card-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary"
+                  min="0"
+                  aria-invalid={!!errors[`energia-${field}`]}
+                  aria-describedby={errors[`energia-${field}`] ? `err-energia-${field}` : undefined}
+                  className={`w-full rounded-lg border px-4 py-2.5 text-sm text-card-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary ${errors[`energia-${field}`] ? "border-status-unpaid bg-status-unpaid/5" : "border-input bg-background"}`}
                 />
+                <FormError id={`err-energia-${field}`} message={errors[`energia-${field}`] || ""} />
               </div>
             ))}
           </div>
         </fieldset>
+
+        {submitted && (
+          <p role="status" className="flex items-center gap-1.5 text-sm font-medium text-status-paid">
+            ✓ Lettura inviata con successo!
+          </p>
+        )}
 
         <button
           type="submit"
@@ -128,6 +166,25 @@ function FormEnergia() {
 }
 
 function FormGas() {
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const errs: Record<string, string> = {};
+    const lettura = (form.elements.namedItem("gas-lettura") as HTMLInputElement).value.trim();
+
+    if (!lettura) errs["gas-lettura"] = "La lettura è obbligatoria.";
+    else if (Number(lettura) < 0) errs["gas-lettura"] = "Il valore non può essere negativo.";
+
+    setErrors(errs);
+    if (Object.keys(errs).length === 0) {
+      setSubmitted(true);
+      setTimeout(() => setSubmitted(false), 3000);
+    }
+  };
+
   return (
     <div className="rounded-xl border border-border bg-card p-6 shadow-card">
       <h3 className="mb-1 font-heading text-lg font-semibold text-primary">Comunica la Lettura del Gas</h3>
@@ -135,7 +192,7 @@ function FormGas() {
         Inserire solo i numeri in nero visibili sul contatore (prima della virgola).
       </p>
 
-      <form className="space-y-5" onSubmit={(e) => e.preventDefault()}>
+      <form className="space-y-5" onSubmit={handleSubmit} noValidate>
         <div>
           <label htmlFor="fornitura-g" className="mb-1.5 block text-sm font-medium text-card-foreground">
             Punto di fornitura *
@@ -153,11 +210,21 @@ function FormGas() {
           <input
             type="number"
             id="gas-lettura"
+            name="gas-lettura"
             placeholder="0"
             min="0"
-            className="w-full rounded-lg border border-input bg-background px-4 py-2.5 text-sm text-card-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary"
+            aria-invalid={!!errors["gas-lettura"]}
+            aria-describedby={errors["gas-lettura"] ? "err-gas-lettura" : undefined}
+            className={`w-full rounded-lg border px-4 py-2.5 text-sm text-card-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary ${errors["gas-lettura"] ? "border-status-unpaid bg-status-unpaid/5" : "border-input bg-background"}`}
           />
+          <FormError id="err-gas-lettura" message={errors["gas-lettura"] || ""} />
         </div>
+
+        {submitted && (
+          <p role="status" className="flex items-center gap-1.5 text-sm font-medium text-status-paid">
+            ✓ Lettura inviata con successo!
+          </p>
+        )}
 
         <button
           type="submit"

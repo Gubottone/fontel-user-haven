@@ -1,9 +1,38 @@
 import { useState } from "react";
 import { Send, Paperclip, MessageSquare } from "lucide-react";
+import { FormError } from "@/components/FormError";
 
 export default function InviaComunicazioni() {
   const [message, setMessage] = useState("");
   const [category, setCategory] = useState("");
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [submitted, setSubmitted] = useState(false);
+
+  const validate = (form: HTMLFormElement) => {
+    const errs: Record<string, string> = {};
+    const cat = (form.elements.namedItem("com-category") as HTMLSelectElement).value;
+    const oggetto = (form.elements.namedItem("com-oggetto") as HTMLInputElement).value.trim();
+    const msg = (form.elements.namedItem("com-message") as HTMLTextAreaElement).value.trim();
+
+    if (!cat) errs["com-category"] = "Seleziona una categoria.";
+    if (!oggetto) errs["com-oggetto"] = "L'oggetto è obbligatorio.";
+    if (!msg) errs["com-message"] = "Il messaggio è obbligatorio.";
+    else if (msg.length > 2000) errs["com-message"] = "Il messaggio non può superare 2000 caratteri.";
+    return errs;
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const errs = validate(e.currentTarget);
+    setErrors(errs);
+    if (Object.keys(errs).length === 0) {
+      setSubmitted(true);
+      setTimeout(() => setSubmitted(false), 3000);
+    }
+  };
+
+  const inputClass = (field: string) =>
+    `w-full rounded-lg border px-4 py-2.5 text-sm text-card-foreground focus:outline-none focus:ring-2 focus:ring-primary ${errors[field] ? "border-status-unpaid bg-status-unpaid/5" : "border-input bg-background"}`;
 
   return (
     <div className="space-y-6">
@@ -23,17 +52,18 @@ export default function InviaComunicazioni() {
           </div>
         </div>
 
-        <form className="space-y-5" onSubmit={(e) => e.preventDefault()}>
+        <form className="space-y-5" onSubmit={handleSubmit} noValidate>
           <div>
             <label htmlFor="com-category" className="mb-1.5 block text-sm font-medium text-card-foreground">
               Categoria *
             </label>
             <select
               id="com-category"
+              name="com-category"
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className="w-full rounded-lg border border-input bg-background px-4 py-2.5 text-sm text-card-foreground focus:outline-none focus:ring-2 focus:ring-primary"
-              required
+              aria-invalid={!!errors["com-category"]} aria-describedby={errors["com-category"] ? "err-com-category" : undefined}
+              className={inputClass("com-category")}
             >
               <option value="">Seleziona una categoria</option>
               <option value="fatturazione">Fatturazione</option>
@@ -42,6 +72,7 @@ export default function InviaComunicazioni() {
               <option value="pagamenti">Pagamenti</option>
               <option value="altro">Altro</option>
             </select>
+            <FormError id="err-com-category" message={errors["com-category"] || ""} />
           </div>
 
           <div>
@@ -50,11 +81,13 @@ export default function InviaComunicazioni() {
             </label>
             <input
               id="com-oggetto"
+              name="com-oggetto"
               type="text"
               placeholder="Inserisci l'oggetto del messaggio"
-              className="w-full rounded-lg border border-input bg-background px-4 py-2.5 text-sm text-card-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary"
-              required
+              aria-invalid={!!errors["com-oggetto"]} aria-describedby={errors["com-oggetto"] ? "err-com-oggetto" : undefined}
+              className={inputClass("com-oggetto") + " placeholder:text-muted-foreground/50"}
             />
+            <FormError id="err-com-oggetto" message={errors["com-oggetto"] || ""} />
           </div>
 
           <div>
@@ -63,14 +96,18 @@ export default function InviaComunicazioni() {
             </label>
             <textarea
               id="com-message"
+              name="com-message"
               rows={6}
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               placeholder="Scrivi il tuo messaggio..."
-              className="w-full resize-y rounded-lg border border-input bg-background px-4 py-2.5 text-sm text-card-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary"
-              required
+              aria-invalid={!!errors["com-message"]} aria-describedby={errors["com-message"] ? "err-com-message" : undefined}
+              className={`resize-y ${inputClass("com-message")} placeholder:text-muted-foreground/50`}
             />
-            <p className="mt-1 text-xs text-muted-foreground">{message.length}/2000 caratteri</p>
+            <div className="mt-1 flex items-center justify-between">
+              <FormError id="err-com-message" message={errors["com-message"] || ""} />
+              <p className="text-xs text-muted-foreground">{message.length}/2000 caratteri</p>
+            </div>
           </div>
 
           <div>
@@ -89,6 +126,12 @@ export default function InviaComunicazioni() {
               <span className="text-xs text-muted-foreground">PDF, JPG, PNG, DOC (max 5MB)</span>
             </div>
           </div>
+
+          {submitted && (
+            <p role="status" className="flex items-center gap-1.5 text-sm font-medium text-status-paid">
+              ✓ Comunicazione inviata con successo!
+            </p>
+          )}
 
           <button
             type="submit"
