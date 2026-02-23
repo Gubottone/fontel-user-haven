@@ -88,9 +88,8 @@ export default function Ticket() {
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
-        <TabsList className="grid w-full grid-cols-2 sm:w-auto sm:inline-grid">
+        <TabsList className="sm:w-auto sm:inline-flex">
           <TabsTrigger value="lista">I miei Ticket</TabsTrigger>
-          <TabsTrigger value="nuovo">Nuovo Ticket</TabsTrigger>
         </TabsList>
 
         <TabsContent value="lista">
