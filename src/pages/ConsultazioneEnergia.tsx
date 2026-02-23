@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Download, FileSpreadsheet, FileText, Search, ChevronLeft, ChevronRight } from "lucide-react";
+import { Download, FileSpreadsheet, FileText, Search, ChevronLeft, ChevronRight, Receipt } from "lucide-react";
 
 const invoiceData = [
   { anno: "2026", nFattura: "14635", tipo: "Energy", skc: "C0030504", emissione: "19/01/2026", scadenza: "16/02/2026", totale: "131,53 €", stato: "DA PAGARE" },
@@ -87,13 +87,22 @@ export default function ConsultazioneEnergia() {
                   <StatusBadge stato={row.stato} />
                 </td>
                 <td className="px-4 py-3 text-center">
-                  <button
-                    className="inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium text-primary transition-colors hover:bg-muted focus-visible:outline-2 focus-visible:outline-primary"
-                    aria-label={`Scarica fattura ${row.nFattura}`}
-                  >
-                    <Download className="h-3.5 w-3.5" aria-hidden="true" />
-                    <span className="hidden sm:inline">Scarica</span>
-                  </button>
+                  <div className="flex items-center justify-center gap-1">
+                    <button
+                      className="inline-flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-xs font-medium text-primary transition-colors hover:bg-muted focus-visible:outline-2 focus-visible:outline-primary"
+                      aria-label={`Scarica bolletta fattura ${row.nFattura}`}
+                    >
+                      <Download className="h-3.5 w-3.5" aria-hidden="true" />
+                      <span className="hidden sm:inline">Bolletta</span>
+                    </button>
+                    <button
+                      className="inline-flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-xs font-medium text-primary transition-colors hover:bg-muted focus-visible:outline-2 focus-visible:outline-primary"
+                      aria-label={`Scarica bollettino fattura ${row.nFattura}`}
+                    >
+                      <Receipt className="h-3.5 w-3.5" aria-hidden="true" />
+                      <span className="hidden sm:inline">Bollettino</span>
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}
