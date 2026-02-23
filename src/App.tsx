@@ -37,7 +37,7 @@ const App = () => (
             <Route path="/contatti" element={<Contatti />} />
             <Route path="/parental-control" element={<ParentalControl />} />
             <Route path="/id-cliente" element={<IdCliente />} />
-            <Route path="/servizio-clienti" element={<PlaceholderPage />} />
+            
             <Route path="/trattamento-dati" element={<PlaceholderPage />} />
             <Route path="/diritti-recesso" element={<PlaceholderPage />} />
             <Route path="/contratti-vendita" element={<PlaceholderPage />} />
