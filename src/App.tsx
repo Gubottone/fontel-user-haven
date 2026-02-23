@@ -9,7 +9,7 @@ import ConsultazioneEnergia from "./pages/ConsultazioneEnergia";
 import ConsultazioneGas from "./pages/ConsultazioneGas";
 import Autolettura from "./pages/Autolettura";
 import ModificaDati from "./pages/ModificaDati";
-import InviaComunicazioni from "./pages/InviaComunicazioni";
+
 import Ticket from "./pages/Ticket";
 import Contatti from "./pages/Contatti";
 import ParentalControl from "./pages/ParentalControl";
@@ -33,7 +33,7 @@ const App = () => (
             <Route path="/consultazione-gas" element={<ConsultazioneGas />} />
             <Route path="/autolettura" element={<Autolettura />} />
             <Route path="/modifica-dati" element={<ModificaDati />} />
-            <Route path="/invia-comunicazioni" element={<InviaComunicazioni />} />
+            <Route path="/invia-comunicazioni" element={<Navigate to="/contatti" replace />} />
             <Route path="/ticket" element={<Ticket />} />
             <Route path="/contatti" element={<Contatti />} />
             <Route path="/parental-control" element={<ParentalControl />} />
