@@ -13,6 +13,7 @@ import InviaComunicazioni from "./pages/InviaComunicazioni";
 import Ticket from "./pages/Ticket";
 import Contatti from "./pages/Contatti";
 import ParentalControl from "./pages/ParentalControl";
+import IdCliente from "./pages/IdCliente";
 import PlaceholderPage from "./pages/PlaceholderPage";
 import NotFound from "./pages/NotFound";
 
@@ -35,7 +36,7 @@ const App = () => (
             <Route path="/ticket" element={<Ticket />} />
             <Route path="/contatti" element={<Contatti />} />
             <Route path="/parental-control" element={<ParentalControl />} />
-            <Route path="/id-cliente" element={<PlaceholderPage />} />
+            <Route path="/id-cliente" element={<IdCliente />} />
             <Route path="/servizio-clienti" element={<PlaceholderPage />} />
             <Route path="/trattamento-dati" element={<PlaceholderPage />} />
             <Route path="/diritti-recesso" element={<PlaceholderPage />} />
