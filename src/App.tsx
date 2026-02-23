@@ -9,7 +9,6 @@ import ConsultazioneEnergia from "./pages/ConsultazioneEnergia";
 import ConsultazioneGas from "./pages/ConsultazioneGas";
 import Autolettura from "./pages/Autolettura";
 import ModificaDati from "./pages/ModificaDati";
-
 import Ticket from "./pages/Ticket";
 import Contatti from "./pages/Contatti";
 import ParentalControl from "./pages/ParentalControl";
@@ -17,6 +16,8 @@ import IdCliente from "./pages/IdCliente";
 import ContrattiVendita from "./pages/ContrattiVendita";
 import PlaceholderPage from "./pages/PlaceholderPage";
 import NotFound from "./pages/NotFound";
+import Login from "./pages/Login";
+import Registrazione from "./pages/Registrazione";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +28,11 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
+          {/* Auth pages */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/registrazione" element={<Registrazione />} />
+
+          {/* Portal */}
           <Route element={<PortalLayout />}>
             <Route path="/" element={<HomeAreaClienti />} />
             <Route path="/consultazione-energia" element={<ConsultazioneEnergia />} />
@@ -38,7 +44,6 @@ const App = () => (
             <Route path="/contatti" element={<Contatti />} />
             <Route path="/parental-control" element={<ParentalControl />} />
             <Route path="/id-cliente" element={<IdCliente />} />
-            
             <Route path="/trattamento-dati" element={<PlaceholderPage />} />
             <Route path="/diritti-recesso" element={<PlaceholderPage />} />
             <Route path="/contratti-vendita" element={<ContrattiVendita />} />

@@ -1,4 +1,4 @@
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import {
   Home,
   Zap,
@@ -135,7 +135,13 @@ export function PortalSidebar({ onClose }: PortalSidebarProps) {
 
       {/* Logout */}
       <div className="border-t border-sidebar-border p-3">
-        <button className="flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium text-sidebar-foreground/70 transition-colors hover:bg-destructive/20 hover:text-destructive-foreground">
+        <button
+          onClick={() => {
+            onClose();
+            window.location.href = "/login";
+          }}
+          className="flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium text-sidebar-foreground/70 transition-colors hover:bg-destructive/20 hover:text-destructive-foreground"
+        >
           <LogOut className="h-[18px] w-[18px]" aria-hidden="true" />
           <span>Esci</span>
         </button>
