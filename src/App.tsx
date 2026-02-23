@@ -14,6 +14,7 @@ import Ticket from "./pages/Ticket";
 import Contatti from "./pages/Contatti";
 import ParentalControl from "./pages/ParentalControl";
 import IdCliente from "./pages/IdCliente";
+import ContrattiVendita from "./pages/ContrattiVendita";
 import PlaceholderPage from "./pages/PlaceholderPage";
 import NotFound from "./pages/NotFound";
 
@@ -40,7 +41,7 @@ const App = () => (
             
             <Route path="/trattamento-dati" element={<PlaceholderPage />} />
             <Route path="/diritti-recesso" element={<PlaceholderPage />} />
-            <Route path="/contratti-vendita" element={<PlaceholderPage />} />
+            <Route path="/contratti-vendita" element={<ContrattiVendita />} />
             <Route path="/curve-prelievo" element={<PlaceholderPage />} />
           </Route>
           <Route path="*" element={<NotFound />} />
