@@ -35,7 +35,6 @@ const mainMenuItems = [
 ];
 
 const serviceMenuItems = [
-  { to: "/servizio-clienti", label: "Servizio Clienti", icon: HeadphonesIcon },
   { to: "/contatti", label: "Contatti", icon: Phone },
   { to: "/trattamento-dati", label: "Trattamento dati", icon: ShieldCheck },
   { to: "/diritti-recesso", label: "Diritti di recesso", icon: Scale },
