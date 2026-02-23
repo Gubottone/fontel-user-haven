@@ -32,7 +32,12 @@ export default function HomeAreaClienti() {
                   <span className="font-medium text-card-foreground">{a.tipo} - Fattura {a.fattura}</span>
                   <span className="ml-2 text-muted-foreground">Scadenza: {a.scadenza}</span>
                 </div>
-                <span className="font-bold text-status-unpaid">{a.importo}</span>
+                <div className="flex items-center gap-3">
+                  <span className="font-bold text-status-unpaid">{a.importo}</span>
+                  <button className="rounded-lg bg-status-unpaid px-4 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-status-unpaid/80 focus-visible:outline-2 focus-visible:outline-status-unpaid">
+                    Paga ora
+                  </button>
+                </div>
               </div>
             ))}
           </div>

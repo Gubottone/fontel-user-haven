@@ -84,7 +84,14 @@ export default function ConsultazioneEnergia() {
                 <td className="px-4 py-3 text-card-foreground">{row.scadenza}</td>
                 <td className="px-4 py-3 text-right font-semibold text-card-foreground">{row.totale}</td>
                 <td className="px-4 py-3 text-center">
-                  <StatusBadge stato={row.stato} />
+                  <div className="flex items-center justify-center gap-2">
+                    <StatusBadge stato={row.stato} />
+                    {row.stato === "DA PAGARE" && (
+                      <button className="rounded-lg bg-status-unpaid px-3 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-status-unpaid/80 focus-visible:outline-2 focus-visible:outline-status-unpaid">
+                        Paga ora
+                      </button>
+                    )}
+                  </div>
                 </td>
                 <td className="px-4 py-3 text-center">
                   <div className="flex items-center justify-center gap-1">

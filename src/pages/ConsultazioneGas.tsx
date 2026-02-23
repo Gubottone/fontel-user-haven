@@ -82,11 +82,18 @@ export default function ConsultazioneGas() {
                 <td className="px-4 py-3 text-card-foreground">{row.scadenza}</td>
                 <td className="px-4 py-3 text-right font-semibold text-card-foreground">{row.totale}</td>
                 <td className="px-4 py-3 text-center">
-                  {row.stato === "DA PAGARE" ? (
-                    <span className="inline-flex items-center rounded-full bg-status-unpaid-bg px-2.5 py-1 text-xs font-semibold text-status-unpaid">Da pagare</span>
-                  ) : (
-                    <span className="inline-flex items-center rounded-full bg-status-paid-bg px-2.5 py-1 text-xs font-semibold text-status-paid">Pagata</span>
-                  )}
+                  <div className="flex items-center justify-center gap-2">
+                    {row.stato === "DA PAGARE" ? (
+                      <span className="inline-flex items-center rounded-full bg-status-unpaid-bg px-2.5 py-1 text-xs font-semibold text-status-unpaid">Da pagare</span>
+                    ) : (
+                      <span className="inline-flex items-center rounded-full bg-status-paid-bg px-2.5 py-1 text-xs font-semibold text-status-paid">Pagata</span>
+                    )}
+                    {row.stato === "DA PAGARE" && (
+                      <button className="rounded-lg bg-status-unpaid px-3 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-status-unpaid/80 focus-visible:outline-2 focus-visible:outline-status-unpaid">
+                        Paga ora
+                      </button>
+                    )}
+                  </div>
                 </td>
                 <td className="px-4 py-3 text-center">
                   <div className="flex items-center justify-center gap-1">
