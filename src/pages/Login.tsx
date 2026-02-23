@@ -113,7 +113,7 @@ export default function Login() {
           <p className="text-sm text-muted-foreground">Primo accesso?</p>
           <Link
             to="/registrazione"
-            className="inline-flex items-center gap-2 text-lg font-bold text-secondary underline decoration-secondary/30 hover:decoration-secondary transition-colors"
+            className="inline-flex items-center gap-2 text-lg font-bold text-primary underline decoration-primary/30 hover:decoration-primary transition-colors"
           >
             Clicca qui per registrarti
           </Link>
