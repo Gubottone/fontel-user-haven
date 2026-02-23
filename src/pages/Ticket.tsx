@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { ChevronRight, ChevronLeft, Send, Upload, CheckCircle2, Eye, Clock, AlertCircle, CheckCircle, Plus } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
@@ -67,7 +68,8 @@ const prioritaConfig: Record<string, string> = {
 const steps = ["Informazioni Ticket", "Messaggio", "Allega Immagine"];
 
 export default function Ticket() {
-  const [activeTab, setActiveTab] = useState("lista");
+  const [searchParams] = useSearchParams();
+  const [activeTab, setActiveTab] = useState(searchParams.get("nuovo") ? "nuovo" : "lista");
 
   return (
     <div className="space-y-6">
