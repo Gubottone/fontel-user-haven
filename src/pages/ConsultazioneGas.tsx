@@ -67,7 +67,7 @@ export default function ConsultazioneGas() {
               <th scope="col" className="px-4 py-3 text-left font-heading font-semibold text-primary">Scadenza</th>
               <th scope="col" className="px-4 py-3 text-right font-heading font-semibold text-primary">Totale</th>
               <th scope="col" className="px-4 py-3 text-center font-heading font-semibold text-primary">Stato</th>
-              <th scope="col" className="px-4 py-3 text-center font-heading font-semibold text-primary"><span className="sr-only">Azioni</span></th>
+              <th scope="col" className="px-4 py-3 text-center font-heading font-semibold text-primary">Download</th>
             </tr>
           </thead>
           <tbody>
