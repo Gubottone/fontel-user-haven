@@ -1,13 +1,21 @@
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import { PortalSidebar } from "./PortalSidebar";
-import { Menu, X } from "lucide-react";
+import { Menu } from "lucide-react";
 
 export function PortalLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
     <div className="flex min-h-screen w-full bg-background">
+      {/* Skip to main content – WCAG 2.4.1 */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-primary focus:px-4 focus:py-2 focus:text-primary-foreground focus:shadow-elevated"
+      >
+        Vai al contenuto principale
+      </a>
+
       {/* Mobile overlay */}
       {sidebarOpen && (
         <div
@@ -19,6 +27,7 @@ export function PortalLayout() {
 
       {/* Sidebar */}
       <aside
+        aria-label="Navigazione area clienti"
         className={`fixed inset-y-0 left-0 z-50 w-72 transform transition-transform duration-200 ease-in-out lg:relative lg:translate-x-0 ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
@@ -40,13 +49,13 @@ export function PortalLayout() {
           <span className="font-heading text-lg font-semibold text-primary">Area Clienti</span>
         </header>
 
-        {/* Welcome bar */}
+        {/* Welcome bar – uses p instead of h1 to avoid duplicate h1 */}
         <div className="border-b border-border bg-card px-6 py-4">
           <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <h1 className="font-heading text-xl font-semibold text-primary">
+              <p className="font-heading text-xl font-semibold text-primary">
                 Benvenuto nella tua Area Personale
-              </h1>
+              </p>
               <p className="text-sm text-muted-foreground">
                 Ciao Giovanni Taolacci, benvenuto!
               </p>

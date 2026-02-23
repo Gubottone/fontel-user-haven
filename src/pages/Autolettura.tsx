@@ -12,11 +12,13 @@ export default function Autolettura() {
         <p className="mt-1 text-sm text-muted-foreground">Comunica qui in pochi click la lettura di Luce e Gas.</p>
       </div>
 
-      {/* Tabs */}
+      {/* Tabs – WCAG compliant with aria-controls / aria-labelledby */}
       <div className="flex gap-1 rounded-xl border border-border bg-card p-1 shadow-card" role="tablist" aria-label="Tipo autolettura">
         <button
+          id="tab-energia"
           role="tab"
           aria-selected={tab === "energia"}
+          aria-controls="tabpanel-energia"
           onClick={() => setTab("energia")}
           className={`flex flex-1 items-center justify-center gap-2 rounded-lg px-4 py-3 text-sm font-semibold transition-all ${
             tab === "energia"
@@ -28,8 +30,10 @@ export default function Autolettura() {
           Lettura Luce
         </button>
         <button
+          id="tab-gas"
           role="tab"
           aria-selected={tab === "gas"}
+          aria-controls="tabpanel-gas"
           onClick={() => setTab("gas")}
           className={`flex flex-1 items-center justify-center gap-2 rounded-lg px-4 py-3 text-sm font-semibold transition-all ${
             tab === "gas"
@@ -42,9 +46,9 @@ export default function Autolettura() {
         </button>
       </div>
 
-      {tab === "energia" ? (
-        <>
-          <div className="flex gap-3 rounded-xl border border-fontel-green/30 bg-fontel-green-light p-4">
+      {tab === "energia" && (
+        <div id="tabpanel-energia" role="tabpanel" aria-labelledby="tab-energia" tabIndex={0}>
+          <div className="mb-6 flex gap-3 rounded-xl border border-fontel-green/30 bg-fontel-green-light p-4">
             <Info className="mt-0.5 h-5 w-5 shrink-0 text-fontel-green" aria-hidden="true" />
             <div className="text-sm text-card-foreground">
               <p className="font-semibold">Quando comunicare la lettura?</p>
@@ -55,10 +59,12 @@ export default function Autolettura() {
             </div>
           </div>
           <FormEnergia />
-        </>
-      ) : (
-        <>
-          <div className="flex gap-3 rounded-xl border border-fontel-green/30 bg-fontel-green-light p-4">
+        </div>
+      )}
+
+      {tab === "gas" && (
+        <div id="tabpanel-gas" role="tabpanel" aria-labelledby="tab-gas" tabIndex={0}>
+          <div className="mb-6 flex gap-3 rounded-xl border border-fontel-green/30 bg-fontel-green-light p-4">
             <Info className="mt-0.5 h-5 w-5 shrink-0 text-fontel-green" aria-hidden="true" />
             <div className="text-sm text-card-foreground">
               <p className="font-semibold">Quando comunicare la lettura?</p>
@@ -74,7 +80,7 @@ export default function Autolettura() {
             </div>
           </div>
           <FormGas />
-        </>
+        </div>
       )}
     </div>
   );
