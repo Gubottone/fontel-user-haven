@@ -14,9 +14,6 @@ const invoiceData = [
   { anno: "2025", nFattura: "71692", skc: "G0002254", emissione: "28/04/2025", scadenza: "23/05/2025", totale: "-494,86 €", stato: "DA PAGARE" },
 ];
 
-const supplyPoints = [
-  { code: "G0002254", address: "VICO I PORTA PICCOLA A MONTECALVARIO 8 NAPOLI", activeFrom: "01 ago 2017" },
-];
 
 export default function ConsultazioneGas() {
   const [search, setSearch] = useState("");
@@ -35,20 +32,6 @@ export default function ConsultazioneGas() {
         <p className="mt-1 text-sm text-muted-foreground">Visualizza e scarica le tue fatture del gas.</p>
       </div>
 
-      {/* Seleziona utenza */}
-      <div className="rounded-xl border border-border bg-card p-4 shadow-card">
-        <label htmlFor="utenza-gas" className="mb-2 block text-sm font-semibold text-card-foreground">Seleziona utenza</label>
-        <select
-          id="utenza-gas"
-          className="w-full rounded-lg border border-input bg-background px-4 py-2.5 text-sm text-card-foreground focus:outline-none focus:ring-2 focus:ring-primary"
-        >
-          {supplyPoints.map((sp) => (
-            <option key={sp.code} value={sp.code}>
-              {sp.code} – {sp.address} (attivo dal {sp.activeFrom})
-            </option>
-          ))}
-        </select>
-      </div>
 
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="relative max-w-xs flex-1">

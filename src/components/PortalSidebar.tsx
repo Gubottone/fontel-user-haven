@@ -92,7 +92,7 @@ export function PortalSidebar({ onClose }: PortalSidebarProps) {
 
       {/* Utenza selector */}
       <div className="mx-4 mb-4 rounded-lg border border-sidebar-border bg-sidebar-accent/30 p-3">
-        <label htmlFor="utenza-select" className="mb-1 block text-[11px] font-medium uppercase tracking-wider text-sidebar-foreground/50">
+        <label htmlFor="utenza-select" className="mb-1.5 block text-[11px] font-medium uppercase tracking-wider text-sidebar-foreground/50">
           Seleziona utenza
         </label>
         <select
@@ -101,8 +101,15 @@ export function PortalSidebar({ onClose }: PortalSidebarProps) {
           defaultValue="all"
         >
           <option value="all">Tutte le utenze</option>
-          <option value="C0030504">C0030504 - Energia</option>
-          <option value="G0002254">G0002254 - Gas</option>
+          <optgroup label="Energia">
+            <option value="C0030504">C0030504 – Vicolo I° Portapiccola a Montecalvario 8, Napoli (NA) – attivo dal 01/08/2017</option>
+          </optgroup>
+          <optgroup label="Gas">
+            <option value="G0002254">G0002254 – Vico I Porta Piccola a Montecalvario 8, Napoli – attivo dal 01/08/2017</option>
+          </optgroup>
+          <optgroup label="Telecomunicazioni">
+            <option disabled>Nessuna utenza attiva</option>
+          </optgroup>
         </select>
       </div>
 
