@@ -5,7 +5,7 @@ import {
   Flame,
   Gauge,
   UserCog,
-  MessageSquarePlus,
+  
   CreditCard,
   TicketCheck,
   HeadphonesIcon,
@@ -29,7 +29,7 @@ const mainMenuItems = [
   { to: "/consultazione-gas", label: "Consultazione Gas", icon: Flame },
   { to: "/autolettura", label: "Autolettura", icon: Gauge },
   { to: "/modifica-dati", label: "Modifica Dati", icon: UserCog },
-  { to: "/invia-comunicazioni", label: "Invia Comunicazioni", icon: MessageSquarePlus },
+  
   { to: "/id-cliente", label: "Id Cliente", icon: CreditCard },
   { to: "/ticket", label: "Ticket", icon: TicketCheck },
 ];
