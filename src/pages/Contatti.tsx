@@ -84,6 +84,12 @@ export default function Contatti() {
               <textarea id="c-msg" rows={5} placeholder="Scrivi il tuo messaggio..." required
                 className="w-full resize-y rounded-lg border border-input bg-background px-4 py-2.5 text-sm text-card-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary" />
             </div>
+            <label className="flex items-start gap-3 cursor-pointer">
+              <input type="checkbox" required className="mt-1 h-4 w-4 shrink-0 rounded border-input text-primary accent-primary focus:ring-primary" />
+              <span className="text-sm text-card-foreground">
+                Autorizzo al trattamento dei dati – <a href="/trattamento-dati" className="font-semibold text-primary underline hover:no-underline">Leggi l'informativa della privacy</a>
+              </span>
+            </label>
             <button type="submit"
               className="inline-flex items-center gap-2 rounded-lg bg-secondary px-6 py-3 text-sm font-bold text-secondary-foreground transition-colors hover:bg-fontel-green-hover focus-visible:outline-2 focus-visible:outline-primary">
               <Send className="h-4 w-4" aria-hidden="true" />
