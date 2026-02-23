@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ChevronRight, ChevronLeft, Send, Upload, CheckCircle2, Eye, Clock, AlertCircle, CheckCircle } from "lucide-react";
+import { ChevronRight, ChevronLeft, Send, Upload, CheckCircle2, Eye, Clock, AlertCircle, CheckCircle, Plus } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 
@@ -67,14 +67,27 @@ const prioritaConfig: Record<string, string> = {
 const steps = ["Informazioni Ticket", "Messaggio", "Allega Immagine"];
 
 export default function Ticket() {
+  const [activeTab, setActiveTab] = useState("lista");
+
   return (
     <div className="space-y-6">
-      <div>
-        <h2 className="font-heading text-2xl font-semibold text-primary">Ticket</h2>
-        <p className="mt-1 text-sm text-muted-foreground">Gestisci le tue segnalazioni o aprine una nuova.</p>
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <h2 className="font-heading text-2xl font-semibold text-primary">Ticket</h2>
+          <p className="mt-1 text-sm text-muted-foreground">Gestisci le tue segnalazioni o aprine una nuova.</p>
+        </div>
+        {activeTab === "lista" && (
+          <button 
+            onClick={() => setActiveTab("nuovo")}
+            className="inline-flex items-center justify-center gap-2 rounded-lg bg-secondary px-6 py-3 text-sm font-bold text-secondary-foreground shadow-lg transition-all hover:bg-fontel-green-hover hover:scale-[1.02] active:scale-[0.98]"
+          >
+            <Plus className="h-5 w-5" />
+            Apri Nuovo Ticket
+          </button>
+        )}
       </div>
 
-      <Tabs defaultValue="lista" className="space-y-4">
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
         <TabsList className="grid w-full grid-cols-2 sm:w-auto sm:inline-grid">
           <TabsTrigger value="lista">I miei Ticket</TabsTrigger>
           <TabsTrigger value="nuovo">Nuovo Ticket</TabsTrigger>
