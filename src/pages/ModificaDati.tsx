@@ -79,11 +79,19 @@ export default function ModificaDati() {
           </div>
         </div>
 
-        <div className="rounded-xl border border-border bg-card p-6 shadow-card">
-          <h3 className="mb-3 font-heading text-lg font-semibold text-primary">Trattamento dati personali</h3>
+        <div className="rounded-xl border border-border bg-card p-6 shadow-card space-y-4">
+          <h3 className="mb-1 font-heading text-lg font-semibold text-primary">Trattamento dati personali</h3>
           <label className="flex items-start gap-3 cursor-pointer">
-            <input type="checkbox" className="mt-1 h-4 w-4 rounded border-input text-primary accent-primary focus:ring-primary" />
-            <span className="text-sm text-card-foreground">Esprimo il consenso al trattamento dei miei dati personali per attività di marketing.</span>
+            <input type="checkbox" className="mt-1 h-4 w-4 shrink-0 rounded border-input text-primary accent-primary focus:ring-primary" />
+            <span className="text-sm text-card-foreground">
+              Dichiaro di aver preso visione e di aver accettato l'informativa ai sensi dell'art. 13 del Codice ed ai sensi degli articoli 23 e 26.
+            </span>
+          </label>
+          <label className="flex items-start gap-3 cursor-pointer">
+            <input type="checkbox" className="mt-1 h-4 w-4 shrink-0 rounded border-input text-primary accent-primary focus:ring-primary" />
+            <span className="text-sm text-card-foreground">
+              Esprimo il consenso al trattamento dei miei dati personali per attività di marketing ad esempio newsletter via e-mail, contenenti offerte esclusive e novità promozionali riservate agli iscritti.
+            </span>
           </label>
         </div>
 
