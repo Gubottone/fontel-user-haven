@@ -6,7 +6,7 @@ const quickActions = [
   { to: "/consultazione-gas", label: "Consultazione Gas", icon: Flame, desc: "Fatture gas" },
   { to: "/autolettura", label: "Autolettura", icon: Gauge, desc: "Comunica lettura" },
   { to: "/modifica-dati", label: "Modifica Dati", icon: UserCog, desc: "Account" },
-  { to: "/ticket", label: "Apri Ticket", icon: TicketCheck, desc: "Segnalazione" },
+  { to: "/ticket?nuovo=1", label: "Apri Ticket", icon: TicketCheck, desc: "Segnalazione" },
   { to: "/contatti", label: "Contatti", icon: Phone, desc: "Assistenza" },
 ];
 
