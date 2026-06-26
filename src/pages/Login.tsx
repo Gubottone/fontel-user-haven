@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { Eye, EyeOff, LogIn, Zap, User } from "lucide-react";
+import { Eye, EyeOff, LogIn } from "lucide-react";
 import { FormError } from "@/components/FormError";
 
 export default function Login() {
@@ -32,8 +32,8 @@ export default function Login() {
       <div className="w-full max-w-md space-y-8">
         {/* Logo */}
         <div className="flex flex-col items-center gap-3">
-          <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-primary">
-            <Zap className="h-8 w-8 text-primary-foreground" />
+          <div className="flex h-20 w-auto items-center justify-center">
+            <img src="/assets/fontel-logo.svg" alt="Logo Fontel" className="h-20 w-auto" />
           </div>
           <div className="text-center">
             <h1 className="font-heading text-2xl font-bold text-primary">
