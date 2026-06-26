@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { Eye, EyeOff, Zap, ChevronRight } from "lucide-react";
+import { Eye, EyeOff, ChevronRight } from "lucide-react";
 import { FormError } from "@/components/FormError";
 
 /* ── Password strength ── */
@@ -77,10 +77,8 @@ export default function Registrazione() {
     return (
       <div className="flex min-h-screen items-center justify-center bg-background p-4">
         <div className="w-full max-w-md space-y-6 text-center">
-          <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-secondary/20">
-            <svg className="h-10 w-10 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-            </svg>
+          <div className="mx-auto flex h-20 w-auto items-center justify-center">
+            <img src="/assets/fontel-logo.svg" alt="Logo Fontel" className="h-20 w-auto" />
           </div>
           <h2 className="font-heading text-2xl font-bold text-primary">
             Controlla la tua E-Mail per confermare la tua registrazione!
@@ -101,8 +99,8 @@ export default function Registrazione() {
       <div className="w-full max-w-2xl space-y-8">
         {/* Logo */}
         <div className="flex flex-col items-center gap-3">
-          <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-primary">
-            <Zap className="h-8 w-8 text-primary-foreground" />
+          <div className="flex h-20 w-auto items-center justify-center">
+            <img src="/assets/fontel-logo.svg" alt="Logo Fontel" className="h-20 w-auto" />
           </div>
           <div className="text-center">
             <h1 className="font-heading text-2xl font-bold text-primary">Registrazione</h1>
